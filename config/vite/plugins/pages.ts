@@ -9,5 +9,12 @@ export const ConfigPagesPlugin = () => {
         extensions: ['vue', 'md', 'tsx'],
         exclude: ['**/components/*.vue'],
         nuxtStyle: true,
+
+        extendRoute(route, parent) {
+            // if (route.path === '/article/info') {
+            //     route.path += '/*'
+            // }
+            // return route
+        }
     })
 }

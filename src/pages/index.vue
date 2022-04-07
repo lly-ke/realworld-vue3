@@ -12,7 +12,7 @@
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <li class="nav-item" v-if="isLogin">
+              <li class="nav-item" v-if="userStore.isLogin">
                 <a class="nav-link disabled" href="">Your Feed</a>
               </li>
               <li class="nav-item">
@@ -32,11 +32,11 @@
                 <i class="ion-heart"></i> {{ article.favoritesCount }}
               </button>
             </div>
-            <a href="" class="preview-link">
+            <router-link :to="`/article/${article.slug}`" class="preview-link">
               <h1>{{ article.title }}</h1>
               <p>{{ article.description }}</p>
               <span>Read more...</span>
-            </a>
+            </router-link>
             <ul class="tag-list float-right"
               ><li
                 :key="tag"
@@ -69,7 +69,6 @@ import { globalArticleList, tagList as tagListApi } from '@/api/article'
 import { useUserStore } from '@/store'
 
 let userStore = useUserStore()
-let isLogin = computed(() => userStore.isLogin)
 
 let articleList: Ref<any> = ref([])
 let tagList: Ref<any> = ref([])

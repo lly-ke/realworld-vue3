@@ -1,6 +1,5 @@
 module.exports = {
-  content: [],
-  purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {},
     extend: {
@@ -10,5 +9,8 @@ module.exports = {
     }
   },
   darkMode: 'class',
-  plugins: []
+  plugins: [],
+  corePlugins: {
+    preflight: false,
+  }
 };

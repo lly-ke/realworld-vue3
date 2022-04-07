@@ -109,6 +109,13 @@ export function get<T = any>(config: AxiosRequestConfig, options?: RequestOption
 export function post<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
   return request({ ...config, method: 'POST' }, options);
 }
+export function del<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+  return request({ ...config, method: 'DELETE' }, options);
+}
+
+export function put<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+  return request({ ...config, method: 'PUT' }, options);
+}
 
 export default request;
 export type { AxiosInstance, AxiosResponse };

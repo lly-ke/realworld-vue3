@@ -61,8 +61,9 @@ function login() {
     console.log('res', res)
     if (!res.data.errors) {
       // 登陆成功
-      userStore.setLoginData(res.data.user)
-      router.push('/')
+      userStore.setLoginData(res.data.user).then(() => {
+        router.push('/')
+      })
     } else {
       // 登陆失败
       errors.value = res.data.errors

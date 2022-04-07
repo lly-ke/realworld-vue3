@@ -76,8 +76,6 @@ function register() {
     },
   })
     .then(function (res: AxiosResponse<any>) {
-      // 打印响应
-      console.log('res', res)
       if (res.data.errors) {
         errors.value = res.data.errors
       } else {

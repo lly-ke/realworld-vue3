@@ -11,13 +11,23 @@
             >Home</router-link
           >
         </li>
-        <li class="nav-item">
-          <a class="nav-link"> <i class="ion-compose"></i>&nbsp;New Article </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"> <i class="ion-gear-a"></i>&nbsp;Settings </a>
-        </li>
         <template v-if="isLogin">
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              :class="{ active: isCurrentPageByPath('/article/editor') }"
+              to="/article/editor"
+              ><i class="ion-compose"></i>&nbsp;New Article
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              :class="{ active: isCurrentPageByPath('/user/settings') }"
+              to="/user/settings"
+              ><i class="ion-gear-a"></i>&nbsp;Settings
+            </router-link>
+          </li>
           <li class="nav-item">
             <div class="nav-link">
               <img class="float-left mr-1 h-6 rounded-full" :src="userInfo.image" />
@@ -32,16 +42,16 @@
           <li class="nav-item">
             <router-link
               class="nav-link"
-              :class="{ active: isCurrentPageByPath('/login') }"
-              to="/login"
+              :class="{ active: isCurrentPageByPath('/user/login') }"
+              to="/user/login"
               >Sign in</router-link
             >
           </li>
           <li class="nav-item">
             <router-link
               class="nav-link"
-              :class="{ active: isCurrentPageByPath('/register') }"
-              to="/register"
+              :class="{ active: isCurrentPageByPath('/user/register') }"
+              to="/user/register"
               >Sign up</router-link
             >
           </li>
@@ -53,13 +63,16 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/store'
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 
 let route = useRoute()
+let router = useRouter()
 
 let userStore = useUserStore()
-let userInfo = computed(() => userStore.userInfo)
-let isLogin = computed(() => userStore.isLogin)
+// let userInfo = computed(() => userStore.userInfo)
+// let isLogin = computed(() => userStore.isLogin)
+let { isLogin, userInfo } = storeToRefs(userStore)
 
 /**
  * @description 传入pageName判断当前页面是否是该页面
@@ -68,7 +81,9 @@ const isCurrentPageByPath = (pageName: string) =>
   route.matched.length > 0 && route.matched[0].path === pageName
 
 function logout() {
-  userStore.$reset()
+  userStore.logout().then(() => {
+    router.push('/')
+  })
 }
 </script>
 <style lang="less"></style>

@@ -90,7 +90,9 @@ let { isLogin } = storeToRefs(userStore)
 
 let articleList: Ref<any> = ref([])
 let tagList: Ref<any> = ref([])
-let tabs: Ref<any> = ref([])
+let headTabs: Ref<any> = ref([])
+let tagTabs: Ref<any> = ref([])
+let tabs: Ref<any> = computed(() => [...headTabs.value, ...tagTabs.value])
 let currentTab: Ref<any> = ref([])
 
 const defaultAvaiableList: any = [
@@ -100,16 +102,16 @@ const defaultAvaiableList: any = [
 
 const showArticleListByTag = (tag: string) => {
   let t = { text: tag, type: 'tag' }
-  tabs.value = [...defaultAvaiableList, t]
+  tagTabs.value = [t]
   currentTab.value = t
 }
 
 watchEffect(() => {
   if (isLogin.value) {
-    tabs.value = defaultAvaiableList
+    headTabs.value = defaultAvaiableList
     currentTab.value = defaultAvaiableList[0]
   } else {
-    tabs.value = [defaultAvaiableList[1]]
+    headTabs.value = [defaultAvaiableList[1]]
     currentTab.value = defaultAvaiableList[1]
   }
 })

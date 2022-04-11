@@ -1,6 +1,6 @@
 export default [
     {
-        path: '/',
-        component: () => import('@/pages/login/index.vue'),
+        path: '/article/editor/:slug',
+        component: () => import('@/pages/article/editor.vue'),
     },
 ]

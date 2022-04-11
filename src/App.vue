@@ -1,6 +1,8 @@
 <template>
   <Header />
-  <router-view></router-view>
+  <Suspense>
+    <router-view></router-view>
+  </Suspense>
   <Footer />
 </template>
 <script setup lang="ts">

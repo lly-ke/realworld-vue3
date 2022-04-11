@@ -2,11 +2,13 @@ import { post, get, del, put } from '@/utils/http/axios'
 import { IArticle } from './types'
 enum URL {
     globalArticleList = "/articles",
+    feedlArticleList = "/articles/feed",
     createArticle = "/articles",
     tagList = '/tags'
 }
 
-const globalArticleList = async () => get({ url: URL.globalArticleList })
+const globalArticleList = async (params?: any) => get({ url: URL.globalArticleList, params })
+const feedlArticleList = async () => get({ url: URL.feedlArticleList })
 const tagList = async () => get({ url: URL.tagList })
 const createArticle = async (article: IArticle) => post({ url: URL.createArticle, data: { article } })
 const delArticle = async (slug: string) => del({ url: `/articles/${slug}` })
@@ -19,7 +21,7 @@ const addCommentsArticle = async (slug: string, data: any) => post({ url: `/arti
 const delCommentsArticle = async (slug: string, id: string) => del({ url: `/articles/${slug}/comments/${id}` })
 
 export {
-    globalArticleList, tagList, createArticle, delArticle, updateArticle
+    globalArticleList, feedlArticleList, tagList, createArticle, delArticle, updateArticle
     , getArticle, favoriteArticle, unFavoriteArticle
     , commentsArticle, addCommentsArticle, delCommentsArticle
 };

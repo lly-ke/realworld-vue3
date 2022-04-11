@@ -3,55 +3,7 @@
     <div class="banner">
       <div class="container">
         <h1>{{ article.title }}</h1>
-
-        <div class="article-meta">
-          <a href=""><img :src="article?.author?.image" /></a>
-          <div class="info">
-            <a href="" class="author">{{ article?.author?.username }}</a>
-            <span class="date">{{ article.createdAt }}</span>
-          </div>
-          <template v-if="article?.author?.username === userInfo?.username">
-            <span ng-show="$ctrl.canModify" class="ng-scope">
-              <a
-                class="btn btn-outline-secondary btn-sm mr-2"
-                ui-sref="app.editor({ slug: $ctrl.article.slug })"
-                href="#/editor/aad-35234"
-              >
-                <i class="ion-edit"></i> Edit Article
-              </a>
-
-              <button class="btn btn-outline-danger btn-sm" @click="delArticle">
-                <i class="ion-trash-a"></i> Delete Article
-              </button>
-            </span>
-          </template>
-          <template v-else>
-            <button
-              @click="followOrUnfollow"
-              class="btn btn-sm"
-              :class="article?.author?.following ? 'btn-secondary' : 'btn-outline-secondary'"
-            >
-              <i class="ion-plus-round"></i>
-              &nbsp;
-              {{
-                `${article?.author?.following ? 'Unfollow' : 'Follow'} ${article?.author?.username}`
-              }}
-            </button>
-            &nbsp;&nbsp;
-            <button
-              @click="favoriteOrUnFavoriter"
-              class="btn btn-sm"
-              :class="article.favorited ? 'btn-primary' : 'btn-outline-primary'"
-            >
-              <i class="ion-heart"></i>
-              &nbsp;
-              <span class="counter">{{
-                `${article.favorited ? 'Unfavorite Post' : 'Favorite Post'}
-                 (${article.favoritesCount})`
-              }}</span>
-            </button>
-          </template>
-        </div>
+        <ArticleMeta :article="article" />
       </div>
     </div>
 
@@ -72,37 +24,7 @@
       <hr />
 
       <div class="article-actions">
-        <div class="article-meta">
-          <a href=""><img :src="article?.author?.image" /></a>
-          <div class="info">
-            <a href="" class="author">{{ article?.author?.username }}</a>
-            <span class="date">{{ article.createdAt }}</span>
-          </div>
-          <button
-            @click="followOrUnfollow"
-            class="btn btn-sm"
-            :class="article?.author?.following ? 'btn-secondary' : 'btn-outline-secondary'"
-          >
-            <i class="ion-plus-round"></i>
-            &nbsp;
-            {{
-              `${article?.author?.following ? 'Unfollow' : 'Follow'} ${article?.author?.username}`
-            }}
-          </button>
-          &nbsp;&nbsp;
-          <button
-            @click="favoriteOrUnFavoriter"
-            class="btn btn-sm"
-            :class="article.favorited ? 'btn-primary' : 'btn-outline-primary'"
-          >
-            <i class="ion-heart"></i>
-            &nbsp;
-            <span class="counter">{{
-              `${article.favorited ? 'Unfavorite Post' : 'Favorite Post'}
-                 (${article.favoritesCount})`
-            }}</span>
-          </button>
-        </div>
+        <ArticleMeta :article="article" />
       </div>
 
       <div class="row">
@@ -154,20 +76,12 @@
 </template>
 
 <script setup lang="ts">
-import {
-  getArticle,
-  favoriteArticle,
-  unFavoriteArticle,
-  commentsArticle,
-  addCommentsArticle,
-  delCommentsArticle,
-  delArticle as delArticleApi,
-} from '@/api/article'
-import { follow, unFollow } from '@/api/user'
+import { getArticle, commentsArticle, addCommentsArticle, delCommentsArticle } from '@/api/article'
 import { Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/store'
 import { storeToRefs } from 'pinia'
+import ArticleMeta from './components/ArticleMeta.vue'
 
 let route = useRoute()
 let router = useRouter()
@@ -205,52 +119,6 @@ const delComment = (id: string) => {
 
 let article: Ref<any> = ref({})
 
-const followOrUnfollow = () => {
-  // 判断没有登陆跳转到登陆页面
-  if (!isLogin.value) {
-    router.push('/user/login')
-    return
-  }
-  if (article.value?.author?.following) {
-    unFollow(article.value.author.username).then(() => {
-      article.value.author.following = false
-    })
-  } else {
-    follow(article.value.author.username).then(() => {
-      article.value.author.following = true
-    })
-  }
-}
-
-//喜欢文章或取消喜欢文章
-const favoriteOrUnFavoriter = () => {
-  // 判断没有登陆跳转到登陆页面
-  if (!isLogin.value) {
-    router.push('/user/login')
-    return
-  }
-  if (article.value?.favorited) {
-    unFavoriteArticle(article.value.slug).then(() => {
-      article.value.favorited = false
-      article.value.favoritesCount--
-    })
-  } else {
-    favoriteArticle(article.value.slug).then(() => {
-      article.value.favorited = true
-      article.value.favoritesCount++
-    })
-  }
-}
-
-// 删除文章
-const delArticle = () => {
-  delArticleApi(slug).then(() => {
-    router.push('/')
-  })
-}
-
-onMounted(async () => {
-  article.value = (await getArticle(slug)).data.article
-  comments.value = (await commentsArticle(slug as string)).data.comments
-})
+article.value = (await getArticle(slug)).data.article
+comments.value = (await commentsArticle(slug as string)).data.comments
 </script>

@@ -51,7 +51,7 @@
                   </span>
                 </div>
               </fieldset>
-              <button @click.self="createArticle" class="btn btn-lg btn-primary pull-xs-right">
+              <button @click.self="saveArticle" class="btn btn-lg btn-primary pull-xs-right">
                 Publish Article
               </button>
             </fieldset>
@@ -64,12 +64,15 @@
 
 
 <script lang="ts" setup >
-import { createArticle as createArticleApi } from '@/api/article'
+import { createArticle, getArticle, updateArticle } from '@/api/article'
 import { IArticle } from '@/api/article/types'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { onBeforeMount, Ref } from 'vue'
 
+let route = useRoute()
 let router = useRouter()
-let article: IArticle = reactive({
+
+let article: Ref<IArticle> = ref({
   title: '',
   description: '',
   body: '',
@@ -78,21 +81,39 @@ let article: IArticle = reactive({
 let tagInputText = ref('')
 let errors = ref([] as any)
 
+let slug = route.params.slug as string
+
+if (slug) {
+  getArticle(slug).then((res) => {
+    article.value = res.data.article
+    console.log(article)
+  })
+}
+
 const addTag = () => {
   if (tagInputText.value) {
-    article.tagList.push(tagInputText.value)
+    article.value.tagList.push(tagInputText.value)
     tagInputText.value = ''
   }
 }
 
-const createArticle = () => {
-  createArticleApi(article).then((res: any) => {
-    console.log(res)
-    if (res.data.errors) {
-      errors.value = res.data.errors
-    } else {
-      router.push(`/article/${res.data.article.slug}`)
-    }
-  })
+const saveArticle = () => {
+  if (slug) {
+    updateArticle(slug, article.value).then((res) => {
+      if (res.data.errors) {
+        errors.value = res.data.errors
+      } else {
+        router.push(`/article/${res.data.article.slug}`)
+      }
+    })
+  } else {
+    createArticle(article.value).then((res: any) => {
+      if (res.data.errors) {
+        errors.value = res.data.errors
+      } else {
+        router.push(`/article/${res.data.article.slug}`)
+      }
+    })
+  }
 }
 </script>

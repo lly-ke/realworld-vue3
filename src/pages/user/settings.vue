@@ -74,9 +74,12 @@ let userInfo = ref({})
 userInfo.value = (await getUserInfo()).data.user
 
 const saveUserInfo = async () => {
-  userStore.setLoginData((await updateUserInfo({
+  updateUserInfo({
     "user": userInfo.value
-  })).data.user)
+  }).then(res => {
+    userStore.setLoginData(res.data.user)
+    router.push(`/user/profile/${res.data.user.username}`)
+  })
 }
 const logout = () => {
   userStore.logout().then(() => {

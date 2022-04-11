@@ -28,9 +28,13 @@
           </div>
           <div v-else class="article-preview" v-for="(article, i) in articleList" :key="i">
             <div class="article-meta">
-              <a href="profile.html"><img :src="article?.author?.image" /></a>
+              <router-link :to="`/user/profile/${article?.author?.username}`"
+                ><img :src="article?.author?.image"
+              /></router-link>
               <div class="info">
-                <a href="" class="author">{{ article?.author?.username }}</a>
+                <router-link :to="`/user/profile/${article?.author?.username}`" class="author">{{
+                  article?.author?.username
+                }}</router-link>
                 <span class="date">{{ article.createdAt }}</span>
               </div>
               <button

@@ -29,10 +29,10 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <div class="nav-link">
+            <router-link :to="`/user/profile/${userInfo.username}`" class="nav-link">
               <img class="float-left mr-1 h-6 rounded-full" :src="userInfo.image" />
               {{ userInfo.username }}
-            </div>
+            </router-link>
           </li>
           <li class="nav-item">
             <a class="nav-link cursor-pointer" @click="logout">Logout</a>

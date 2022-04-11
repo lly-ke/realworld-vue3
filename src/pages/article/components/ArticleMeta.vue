@@ -1,8 +1,12 @@
 <template>
   <div class="article-meta">
-    <a href=""><img :src="article?.author?.image" /></a>
+    <router-link :to="`/user/profile/${article?.author?.username}`"
+      ><img :src="article?.author?.image"
+    /></router-link>
     <div class="info">
-      <a href="" class="author">{{ article?.author?.username }}</a>
+      <router-link :to="`/user/profile/${article?.author?.username}`" class="author">{{
+        article?.author?.username
+      }}</router-link>
       <span class="date">{{ article.createdAt }}</span>
     </div>
     <template v-if="article?.author?.username === userInfo?.username">
@@ -21,7 +25,7 @@
     </template>
     <template v-else>
       <button
-        @click="followOrUnfollow"
+        @click="useFollowOrUnfollow(toRefs(article?.author).following, article.author?.username)"
         class="btn btn-sm"
         :class="article?.author?.following ? 'btn-secondary' : 'btn-outline-secondary'"
       >
@@ -48,11 +52,12 @@
 
 <script setup>
 import { useFavoriteOrUnFavoriter } from '../use/favorite'
+import { useFollowOrUnfollow } from '@/pages/user/use/follwing'
 import { follow, unFollow } from '@/api/user'
 import {
   delArticle as delArticleApi
 } from '@/api/article'
-import { defineProps } from 'vue'
+import { defineProps, toRefs } from 'vue'
 import { useUserStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'

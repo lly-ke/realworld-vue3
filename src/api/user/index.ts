@@ -5,7 +5,6 @@ import { UserState } from '@/store/modules/user/types';
 // import axios from 'axios';
 enum URL {
     logout = '/user/logout',
-    profile = '/user/profile',
     login = '/users/login',
     register = '/users',
     userInfo = '/user'
@@ -13,7 +12,7 @@ enum URL {
 
 const getUserInfo = async () => get({ url: URL.userInfo })
 const updateUserInfo = async (data: any) => put({ url: URL.userInfo, data })
-const getUserProfile = async () => get<UserState>({ url: URL.profile });
+const getUserProfile = async (username: string) => get<UserState>({ url: `/profiles/${username}` });
 const login = async (data: ILoginReqData) => post({ url: URL.login, data });
 const register = async (data: IRegisterReqData) => post({ url: URL.register, data })
 const follow = async (username: string) => post({ url: `/profiles/${username}/follow` })

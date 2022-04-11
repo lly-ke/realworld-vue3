@@ -53,11 +53,15 @@
               <p class="card-text">{{ comment.body }}</p>
             </div>
             <div class="card-footer">
-              <a href="" class="comment-author">
+              <router-link :to="`/user/profile/${comment.author?.username}`" class="comment-author">
                 <img :src="comment?.author?.image" class="comment-author-img" />
-              </a>
+              </router-link>
               &nbsp;
-              <a href="" class="comment-author">{{ comment?.author?.username }}</a>
+              <router-link
+                :to="`/user/profile/${comment.author?.username}`"
+                class="comment-author"
+                >{{ comment?.author?.username }}</router-link
+              >
               <span class="date-posted">{{ comment.createdAt }}</span>
               <span class="mod-options">
                 <!-- <i class="ion-edit"></i> -->

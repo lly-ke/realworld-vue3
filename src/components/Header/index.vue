@@ -77,8 +77,9 @@ let { isLogin, userInfo } = storeToRefs(userStore)
 /**
  * @description 传入pageName判断当前页面是否是该页面
  */
-const isCurrentPageByPath = (pageName: string) =>
+const isCurrentPageByPath = (pageName: string) => {
   route.matched.length > 0 && route.matched[0].path === pageName
+}
 
 function logout() {
   userStore.logout().then(() => {

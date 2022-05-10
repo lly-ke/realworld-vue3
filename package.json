@@ -3,9 +3,9 @@
   "version": "0.1.1",
   "author": "2720851545",
   "scripts": {
-    "ssr": "node server.js",
     "dev": "vite --mode development",
     "build": "vue-tsc --noEmit && vite build",
+    "build-skip-error": "vite build",
     "preview": "vite preview",
     "build:dev": "vite build --mode development",
     "build:pro": "vite build --mode production",
@@ -13,7 +13,8 @@
     "plop": "plop",
     "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
     "prettier": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "ssr": "node server.js"
   },
   "dependencies": {
     "@vueuse/components": "^8.1.2",

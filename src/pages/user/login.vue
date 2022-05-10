@@ -50,8 +50,8 @@ let userStore = useUserStore()
 let router = useRouter()
 
 let user = reactive({
-  email: '5CPS',
-  password: '秒速五厘米',
+  email: '',
+  password: '',
 })
 let errors = ref({})
 

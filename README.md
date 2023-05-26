@@ -15,3 +15,6 @@
 
 基于[
 fast-vue3](https://github.com/tobe-fe-dalao/fast-vue3) 实现 RealWorld
+
+## Sponsors
+- [Cloudflare CDN](https://www.cloudflare.com/cdn/) - 使用下一代技术提供快速、可靠的 CDN 服务的内容交付网络
